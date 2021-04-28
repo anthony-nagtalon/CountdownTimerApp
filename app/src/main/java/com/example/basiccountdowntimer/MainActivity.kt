@@ -50,29 +50,24 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 timerRunning = false
-                buttonStartAndPause.setText(R.string.start_button)
-                buttonStartAndPause.visibility = View.INVISIBLE
-                buttonReset.visibility = View.VISIBLE
+                updateButtons()
             }
         }.start()
 
         timerRunning = true
-        buttonStartAndPause.setText(R.string.pause_button)
-        buttonReset.visibility = View.INVISIBLE
+        updateButtons()
     }
 
     private fun pauseTimer() {
         countDownTimer.cancel()
         timerRunning = false
-        buttonStartAndPause.setText(R.string.start_button)
-        buttonReset.visibility = View.VISIBLE
+        updateButtons()
     }
 
     private fun resetTimer() {
         timeLeftInMillis = START_TIME_IN_MILLIS
         updateCountDownText()
-        buttonReset.visibility = View.INVISIBLE
-        buttonStartAndPause.visibility = View.VISIBLE
+        updateButtons()
     }
 
     private fun updateCountDownText() {
@@ -82,5 +77,26 @@ class MainActivity : AppCompatActivity() {
         val timeLeftFormatted : String = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
 
         textViewCountdown.setText(timeLeftFormatted)
+    }
+
+    private fun updateButtons() {
+        if(timerRunning) {
+            buttonReset.visibility = View.INVISIBLE
+            buttonStartAndPause.setText(R.string.pause_button)
+        } else {
+            buttonStartAndPause.setText(R.string.start_button)
+
+            if(timeLeftInMillis < 1000) {
+                buttonStartAndPause.visibility = View.INVISIBLE
+            } else {
+                buttonStartAndPause.visibility = View.VISIBLE
+            }
+
+            if (timeLeftInMillis < START_TIME_IN_MILLIS) {
+                buttonReset.visibility = View.VISIBLE
+            } else {
+                buttonReset.visibility = View.INVISIBLE
+            }
+        }
     }
 }
