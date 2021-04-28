@@ -12,9 +12,9 @@ class MainActivity : AppCompatActivity() {
     private val START_TIME_IN_MILLIS : Long = 600000
     private var timeLeftInMillis : Long = START_TIME_IN_MILLIS
 
-    private val textViewCountdown : TextView = findViewById<TextView>(R.id.text_view_countdown)
-    private val buttonStartAndPause : Button = findViewById<Button>(R.id.button_start_and_pause)
-    private val buttonReset : Button = findViewById<Button>(R.id.button_reset)
+    private lateinit var textViewCountdown : TextView
+    private lateinit var buttonStartAndPause : Button
+    private lateinit var buttonReset : Button
 
     private lateinit var countDownTimer : CountDownTimer
 
@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        textViewCountdown = findViewById<TextView>(R.id.text_view_countdown)
+        buttonStartAndPause = findViewById<Button>(R.id.button_start_and_pause)
+        buttonReset = findViewById<Button>(R.id.button_reset)
 
         buttonStartAndPause.setOnClickListener {
             if(timerRunning) {
