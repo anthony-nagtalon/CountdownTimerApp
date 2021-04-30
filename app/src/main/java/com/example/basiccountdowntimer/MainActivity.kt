@@ -1,5 +1,6 @@
 package com.example.basiccountdowntimer
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -31,8 +32,10 @@ class MainActivity : AppCompatActivity() {
         buttonStartAndPause.setOnClickListener {
             if(timerRunning) {
                 pauseTimer()
+                stopService()
             } else {
                 startTimer()
+                startService()
             }
         }
 
@@ -98,5 +101,22 @@ class MainActivity : AppCompatActivity() {
                 buttonReset.visibility = View.INVISIBLE
             }
         }
+    }
+
+    private fun startService() {
+        val minutes : Int = ((timeLeftInMillis / 1000) / 60).toInt()
+        val seconds : Int = ((timeLeftInMillis / 1000) % 60).toInt()
+
+        val remainingTime : String = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+
+        val serviceIntent = Intent(this, NotificationService::class.java)
+        serviceIntent.putExtra("remainingTime", remainingTime)
+
+        startService(serviceIntent)
+    }
+
+    private fun stopService() {
+        val serviceIntent = Intent(this, NotificationService::class.java)
+        stopService(serviceIntent)
     }
 }
